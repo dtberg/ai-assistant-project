@@ -1,150 +1,162 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Assistant - Prairie Style</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <title>Particle System Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Roboto Slab', serif;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f4e1c1; /* Warm, prairie-inspired background */
-            color: #2c1810; /* Deep brown text */
+            background-color: #1a1a1a; /* Deep black background */
+            color: #e0e0e0;
+            min-height: 100vh;
         }
         
         .chat-container {
             max-width: 900px;
             margin: 20px auto;
-            background: #fff8ef;
-            border: 2px solid #8b4513;
-            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.15);
+            background: #2d2d2d;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             padding: 30px;
             position: relative;
-        }
-
-        /* Geometric pattern border */
-        .chat-container::before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 1px solid #8b4513;
-            pointer-events: none;
+            overflow: hidden;
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
-            border-bottom: 2px solid #8b4513;
             padding-bottom: 20px;
+            border-bottom: 1px solid #3d3d3d;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            color: #8b4513;
+            font-size: 2.2em;
+            color: #ffffff;
             margin: 0;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        .header p {
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
+            font-weight: 300;
         }
 
         .chat-messages {
             height: 500px;
             overflow-y: auto;
             padding: 20px;
-            border: 1px solid #d4a76a;
-            background: #fffaf5;
+            border-radius: 15px;
+            background: #232323;
             margin-bottom: 30px;
         }
 
         .message {
             margin: 15px 0;
-            padding: 15px;
-            border-radius: 0; /* Square corners for geometric feel */
-            max-width: 80%;
+            padding: 18px;
+            border-radius: 18px;
+            max-width: 85%;
             position: relative;
+            line-height: 1.5;
+            font-weight: 300;
         }
 
         .user-message {
-            background-color: #8b4513;
-            color: #fff8ef;
+            background-color: #4a4a4a;
+            color: #ffffff;
             margin-left: auto;
-            border-left: 15px solid #5e2f0d;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .assistant-message {
-            background-color: #d4a76a;
-            color: #2c1810;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
             margin-right: auto;
-            border-right: 15px solid #8b4513;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .input-area {
             display: flex;
             gap: 15px;
             padding: 20px 0;
-            border-top: 2px solid #8b4513;
+            border-top: 1px solid #3d3d3d;
         }
 
         #user-input {
             flex-grow: 1;
-            padding: 15px;
-            border: 2px solid #8b4513;
-            background: #fffaf5;
-            font-family: 'Roboto Slab', serif;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 12px;
+            background: #232323;
+            font-family: 'Montserrat', sans-serif;
             font-size: 16px;
-            color: #2c1810;
+            color: #ffffff;
             transition: all 0.3s ease;
         }
 
         #user-input:focus {
             outline: none;
-            box-shadow: 0 0 0 2px #d4a76a;
+            box-shadow: 0 0 0 2px #4a4a4a;
+            background: #2a2a2a;
         }
 
         #send-button {
-            padding: 15px 30px;
-            background-color: #8b4513;
-            color: #fff8ef;
+            padding: 16px 30px;
+            background-color: #4a4a4a;
+            color: #ffffff;
             border: none;
-            font-family: 'Roboto Slab', serif;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         #send-button:hover {
-            background-color: #5e2f0d;
+            background-color: #5a5a5a;
+            transform: translateY(-1px);
         }
 
         #send-button:disabled {
-            background-color: #d4a76a;
+            background-color: #3d3d3d;
             cursor: not-allowed;
+            transform: none;
         }
 
         /* Custom scrollbar */
         .chat-messages::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
 
         .chat-messages::-webkit-scrollbar-track {
-            background: #fff8ef;
+            background: #232323;
+            border-radius: 4px;
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
-            background: #8b4513;
-            border: 3px solid #fff8ef;
+            background: #4a4a4a;
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #5a5a5a;
         }
     </style>
 </head>
 <body>
     <div class="chat-container">
         <div class="header">
-            <h1>Prairie AI Assistant</h1>
+            <h1>Particle System Assistant</h1>
+            <p>inspired by Joshua Jay</p>
         </div>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="input-area">
-            <input type="text" id="user-input" placeholder="Type your message..." />
+            <input type="text" id="user-input" placeholder="Ask about the Particle System..." />
             <button id="send-button">Send</button>
         </div>
     </div>
