@@ -47,7 +47,15 @@ export default async function handler(req, res) {
 
         res.status(200).json({ response });
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: error.message });
+        console.error('Detailed Error:', {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
+        res.status(500).json({ 
+            error: error.message,
+            details: error.name,
+            stack: error.stack 
+        });
     }
 }
