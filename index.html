@@ -8,7 +8,7 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #1a1a1a; /* Deep black background */
+            background: linear-gradient(145deg, #1a1a1a, #212121);
             color: #e0e0e0;
             min-height: 100vh;
         }
@@ -17,6 +17,7 @@
             max-width: 900px;
             margin: 20px auto;
             background: #2d2d2d;
+            border: 1px solid #4a3b63;
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             padding: 30px;
@@ -33,14 +34,17 @@
 
         .header h1 {
             font-size: 2.2em;
-            color: #ffffff;
             margin: 0;
             letter-spacing: 1px;
             font-weight: 300;
+            background: linear-gradient(45deg, #d4af37, #f4e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header p {
-            color: #888;
+            color: #9c89b8;
             margin-top: 10px;
             font-style: italic;
             font-weight: 300;
@@ -66,14 +70,16 @@
         }
 
         .user-message {
-            background-color: #4a4a4a;
+            background: linear-gradient(145deg, #4a3b63, #5d4a7d);
+            border-left: 3px solid #d4af37;
             color: #ffffff;
             margin-left: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .assistant-message {
-            background-color: #2a2a2a;
+            background: linear-gradient(145deg, #2a2a2a, #323232);
+            border-left: 3px solid #9c89b8;
             color: #e0e0e0;
             margin-right: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -100,13 +106,13 @@
 
         #user-input:focus {
             outline: none;
-            box-shadow: 0 0 0 2px #4a4a4a;
+            box-shadow: 0 0 0 2px #4a3b63;
             background: #2a2a2a;
         }
 
         #send-button {
             padding: 16px 30px;
-            background-color: #4a4a4a;
+            background: linear-gradient(145deg, #d4af37, #b4941f);
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -118,7 +124,7 @@
         }
 
         #send-button:hover {
-            background-color: #5a5a5a;
+            background: linear-gradient(145deg, #e5c04c, #d4af37);
             transform: translateY(-1px);
         }
 
@@ -139,12 +145,12 @@
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
-            background: #4a4a4a;
+            background: #4a3b63;
             border-radius: 4px;
         }
 
         .chat-messages::-webkit-scrollbar-thumb:hover {
-            background: #5a5a5a;
+            background: #5d4a7d;
         }
     </style>
 </head>
