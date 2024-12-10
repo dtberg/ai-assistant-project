@@ -1,7 +1,15 @@
 const express = require('express');
+console.log('Starting server...');
+console.log('Express loaded');
+
 const cors = require('cors');
+console.log('CORS loaded');
+
 const { OpenAI } = require('openai');
+console.log('OpenAI loaded');
+
 require('dotenv').config();
+console.log('Environment variables loaded');
 
 const app = express();
 app.use(cors());
@@ -14,7 +22,10 @@ const openai = new OpenAI({
 // Store threads in memory (for development purposes)
 const threads = new Map();
 
-app.post('/chat', async (req, res) => {
+app.post('/api/chat', async (req, res) => {
+    console.log('Request received!');
+    console.log('Body:', req.body);
+    console.log('Message:', req.body?.message);
     try {
         const userMessage = req.body.message;
         const userId = req.body.userId || 'default-user'; // Simple user identification
@@ -33,9 +44,10 @@ app.post('/chat', async (req, res) => {
             content: userMessage
         });
 
-        // Run the assistant
+        // Run the assistant with max tokens limit
         const run = await openai.beta.threads.runs.create(threadId, {
-            assistant_id: 'asst_CDZBQ7HD8CqwIT0Fp61vcUhD'
+            assistant_id: 'asst_CDZBQ7HD8CqwIT0Fp61vcUhD',
+            instructions: "Please keep responses concise and under 150 tokens. Focus on clear, direct answers."
         });
 
         // Wait for the assistant to complete its response
@@ -62,6 +74,12 @@ app.post('/chat', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+console.log('About to start server on port:', PORT);
+
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log('---------------------------');
+    console.log(`Server is now running`);
+    console.log(`Port: ${PORT}`);
+    console.log(`URL: http://localhost:${PORT}`);
+    console.log('---------------------------');
 });

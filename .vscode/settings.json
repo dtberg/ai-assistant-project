@@ -1,0 +1,20 @@
+{
+  "editor.formatOnSave": true,
+  "python.linting.enabled": true,
+  "files.exclude": {
+      "**/__pycache__": true,
+      "**/.DS_Store": true
+  },
+  "editor.rulers": [80, 100],
+  "editor.tabSize": 4,
+  "files.trimTrailingWhitespace": true,
+  "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    }
+  },
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "${workspaceFolder}/venv/bin/black"
+}

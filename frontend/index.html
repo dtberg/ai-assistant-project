@@ -4,6 +4,7 @@
     <title>Particle System Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Your existing styles remain the same */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -12,7 +13,7 @@
             color: #e0e0e0;
             min-height: 100vh;
         }
-        
+
         .chat-container {
             max-width: 900px;
             margin: 20px auto;
@@ -134,7 +135,6 @@
             transform: none;
         }
 
-        /* Custom scrollbar */
         .chat-messages::-webkit-scrollbar {
             width: 8px;
         }
@@ -173,6 +173,9 @@
         const sendButton = document.getElementById('send-button');
         const userId = 'user-' + Math.random().toString(36).substr(2, 9);
 
+        // Determine the API URL based on the environment
+        const API_URL = 'http://localhost:3000/api/chat';  // This will use relative path in production
+
         function addMessage(message, isUser) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
@@ -185,12 +188,14 @@
             const message = userInput.value.trim();
             if (!message) return;
 
+            console.log('Attempting to send message:', message);
             addMessage(message, true);
             userInput.value = '';
             sendButton.disabled = true;
 
             try {
-                const response = await fetch('/api/chat', {
+                console.log('Sending fetch request to:', API_URL);
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -200,11 +205,14 @@
                         userId: userId
                     })
                 });
+                console.log('Received response:', response);
 
                 const data = await response.json();
+                console.log('Response data:', data);
                 addMessage(data.response, false);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Detailed error:', error);
+                console.error('Error stack:', error.stack);
                 addMessage('Sorry, there was an error processing your request.', false);
             }
 
