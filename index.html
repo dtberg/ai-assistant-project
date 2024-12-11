@@ -4,7 +4,6 @@
     <title>Particle System Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Your existing styles remain the same */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -174,7 +173,9 @@
         const userId = 'user-' + Math.random().toString(36).substr(2, 9);
 
         // Determine the API URL based on the environment
-        const API_URL = 'http://localhost:3000/api/chat';  // This will use relative path in production
+        const API_URL = window.location.hostname === 'localhost'
+            ? 'http://localhost:3000/api/chat'
+            : '/api/chat';
 
         function addMessage(message, isUser) {
             const messageDiv = document.createElement('div');
