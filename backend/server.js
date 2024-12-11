@@ -53,11 +53,11 @@ app.post('/api/chat', async (req, res) => {
         });
         console.log('Message added to thread');
 
-        // Run the assistant with max tokens limit
+        // Run the assistant with explicit instructions
         console.log('Creating run with assistant ID:', 'asst_CDZBQ7HD8CqwIT0Fp61vcUhD');
         const run = await openai.beta.threads.runs.create(threadId, {
             assistant_id: 'asst_CDZBQ7HD8CqwIT0Fp61vcUhD',
-            instructions: "Please keep responses concise and under 150 tokens. Focus on clear, direct answers related to the Particle System card magic method."
+            instructions: "You are the Particle System Assistant, specifically focused on Joshua Jay's Particle System method for card magic. Only provide information and answers related to this system. If a question is not about the Particle System, politely redirect the user to ask about the Particle System. Keep responses concise and under 150 tokens."
         });
         console.log('Run created:', run);
 
