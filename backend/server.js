@@ -43,12 +43,19 @@ app.post('/api/chat', async (req, res) => {
             threads.set(userId, threadId);
 
             // Send welcome message instead of processing user message
-            const welcomeRun = await openai.beta.threads.runs.create(threadId, {
-                assistant_id: 'asst_CDZBQ7HD8CqwIT0Fp61vcUhD',
-                instructions: `Provide a welcoming initial message that introduces the Particle System Assistant's capabilities.
-                Format the message with clear line breaks and proper spacing.
-                Include 2-3 example questions users can ask.`
-            });
+const welcomeRun = await openai.beta.threads.runs.create(threadId, {
+        assistant_id: 'asst_CDZBQ7HD8CqwIT0Fp61vcUhD',
+        instructions: `Provide a welcoming initial message specifically about Joshua Jay's Particle System for card magic.
+        Explain that you are an assistant dedicated to helping users learn and master this specific card stack system.
+
+        Include 2-3 example questions like:
+        - "What's the first card in the stack?"
+        - "Show me the first five cards"
+        - "What card is in position 25?"
+
+        Make it clear this is about a memorized deck system for card magic, not about particle physics or computer graphics.
+        Format the message with clear line breaks and proper spacing.`
+        });
 
             // Wait for welcome message
             while (true) {
