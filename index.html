@@ -62,6 +62,20 @@
             position: relative;
             line-height: 1.4;
             font-size: 0.9em;
+            white-space: pre-line;
+        }
+
+        .message p {
+            margin: 5px 0;
+            padding: 0;
+        }
+
+        .message p:first-child {
+            margin-top: 0;
+        }
+
+        .message p:last-child {
+            margin-bottom: 0;
         }
 
         .user-message {
@@ -76,6 +90,16 @@
             border: 1px solid #91d5ff;
             margin-right: auto;
             color: #333;
+        }
+
+        .numbered-list {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+
+        .numbered-list-item {
+            margin: 5px 0;
+            padding: 0;
         }
 
         .input-area {
@@ -165,12 +189,73 @@
             ? 'http://localhost:3000/api/chat'
             : '/api/chat';
 
+        function formatMessage(message) {
+            // Remove file citations
+            message = message.replace(/【[^】]+】/g, '');
+
+            // Split message into lines
+            const lines = message.split('\n');
+
+            let formattedLines = [];
+            let inNumberedList = false;
+
+            for (let line of lines) {
+                // Check if line is part of a numbered list
+                if (/^\d+\.\s/.test(line.trim())) {
+                    if (!inNumberedList) {
+                        inNumberedList = true;
+                        formattedLines.push('<div class="numbered-list">');
+                    }
+                    formattedLines.push(`<div class="numbered-list-item">${line.trim()}</div>`);
+                } else {
+                    if (inNumberedList) {
+                        inNumberedList = false;
+                        formattedLines.push('</div>');
+                    }
+                    formattedLines.push(line);
+                }
+            }
+
+            if (inNumberedList) {
+                formattedLines.push('</div>');
+            }
+
+            return formattedLines.join('\n');
+        }
+
         function addMessage(message, isUser) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
-            messageDiv.textContent = message;
+
+            if (isUser) {
+                messageDiv.textContent = message;
+            } else {
+                messageDiv.innerHTML = formatMessage(message);
+            }
+
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function loadWelcomeMessage() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: "INIT_SESSION",
+                        userId
+                    })
+                });
+
+                const data = await response.json();
+                addMessage(data.response, false);
+            } catch (error) {
+                console.error('Error loading welcome message:', error);
+                addMessage('Welcome to the Particle System Assistant!', false);
+            }
         }
 
         async function sendMessage() {
@@ -203,6 +288,8 @@
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
+
+        document.addEventListener('DOMContentLoaded', loadWelcomeMessage);
     </script>
 </body>
 </html>
